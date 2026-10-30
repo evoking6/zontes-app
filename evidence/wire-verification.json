@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "verified_on": "2026-10-30",
+  "platform": "macOS",
+  "endpoint": "www.sharpon.com:4510",
+  "scope": "Authorized account; official HTTPS login/profile and one owned vehicle; bounded authentication and read-only probes; exactly one find action submitted on Mac. Physical execution unobserved. No credentials or vehicle identities included.",
+  "authentication": {
+    "native_rsa_1_2_25": "no response within 2.2 seconds",
+    "native_rsa_1_3_0": "no response, including a 10-second system-route and 5-second physical-interface probe",
+    "text_frames": [
+      {
+        "interface": "en0",
+        "bytes_sent": 110,
+        "received_bytes": 119,
+        "auth_ok": true,
+        "elapsed_ms": 101
+      },
+      {
+        "interface": "system",
+        "bytes_sent": 110,
+        "received_bytes": 119,
+        "auth_ok": true,
+        "elapsed_ms": 59
+      },
+      {
+        "interface": "system",
+        "bytes_sent": 110,
+        "received_bytes": 119,
+        "auth_ok": true,
+        "elapsed_ms": 100
+      }
+    ]
+  },
+  "read_only_refresh": {
+    "text_native_command_without_hash": {
+      "response_ascii": ",OK#",
+      "vehicle_confirmation": false
+    },
+    "text_with_hash": {
+      "response_ascii": ",OK#",
+      "vehicle_confirmation": false,
+      "extended_wait_seconds": 12
+    },
+    "text_auth_then_native_rsa_command": {
+      "response_bytes": 0,
+      "wait_seconds": 5
+    }
+  },
+  "find": {
+    "authentication_frame_bytes": 110,
+    "command": "find",
+    "command_frame_bytes": 76,
+    "elapsed_ms": 3520,
+    "error": "网络错误：命令已发送，但未收到车辆确认，车辆结果未知",
+    "platform": "macOS",
+    "stages": [
+      "connecting",
+      "authenticating",
+      "sending",
+      "verifying"
+    ],
+    "started_at": "2026-10-30T03:17:57Z",
+    "success": false,
+    "vehicle_action_submitted": true
+  },
+  "regression": {
+    "actual_swift_builder_and_tcp_client": {
+      "rsa_auth_before_fix": "failed authentication",
+      "text_auth_before_echo_fix": "failed on early command echo",
+      "text_auth_after_echo_fix": "passed delayed framed ACK fixture"
+    },
+    "fixture_uses_real_vehicle": false
+  },
+  "limitations": [
+    "Text authentication response is established; vehicle action acceptance is not.",
+    "A bare ,OK# is not proof of vehicle execution.",
+    "An ASCII command # terminator is an implementation candidate, not a proven universal server requirement.",
+    "No automatic action retries.",
+    "Do not replace successful native offline evidence with a claim of live RSA compatibility."
+  ]
+}

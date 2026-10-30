@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "verified_on": "2026-10-30",
-  "scope": "Two protocol documents; native encoding verified offline; no vehicle commands or real account requests in this run. iOS source re-read from the existing project over SSH.",
+  "scope": "Historical initial extraction: two protocol documents and offline Native encoding verification only. Subsequent authorized live probes are recorded separately in wire-verification.json. iOS source re-read over SSH.",
   "samples": [
     {
       "name": "ShiRide 1.2.25-46 APK",
@@ -401,5 +401,6 @@
     "resources/remote-rsa-shiride-1.3.0.pem": "4151a40086e9a9df89fee648a61a5bf7bcc22612a12844c55ca6ef7c5d38b3d3",
     "resources/whitebox.json": "11ce5e668191ec331789d7cabc0ef798115d9784286660428c696bfe0a8dd20a"
   },
-  "excluded": "APKs/SOs, private signing material, account tokens, real vehicle identities and locations; source files indexed by hash are not wholesale republished."
+  "excluded": "APKs/SOs, private signing material, account tokens, real vehicle identities and locations; source files indexed by hash are not wholesale republished.",
+  "follow_up": "2026-10-30 authorized Mac live probes contradict the initial assumption that Native RSA output is a working current transport; see wire-verification.json. Source file hashes below are historical extraction inputs."
 }

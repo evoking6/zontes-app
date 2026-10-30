@@ -55,6 +55,16 @@ class NativeVectorTests(unittest.TestCase):
     def test_rsa_production_randomness_is_not_fixed_fixture_padding(self):
         self.assertNotEqual(p.rsa_encrypt(b"synthetic"), p.rsa_encrypt(b"synthetic"))
 
+    def test_text_transport_keeps_native_signatures_and_adds_one_terminator(self):
+        f = json.loads((ROOT / "vectors/remote-1.3.0.json").read_text())
+        for command in p.COMMANDS:
+            plain = p.build_plaintexts(command, **f["input"])
+            auth, cmd = p.build_text_frames(command, **f["input"])
+            self.assertEqual(auth, plain.authentication)
+            self.assertEqual(cmd, plain.command.rstrip(b"#") + b"#")
+            self.assertFalse(cmd.endswith(b"##"))
+            self.assertNotIn(b"\n", auth + cmd)
+
 
 class BoundaryTests(unittest.TestCase):
     MCU = "12345678901234567890123456789012"
@@ -141,6 +151,14 @@ class FramingAndResultTests(unittest.TestCase):
         self.assertEqual(p.remote_ack("*AC,USER123,PKE123,009,0#", "freeze", "USER123", "PKE123"), "rejected")
         self.assertEqual(p.remote_ack("*AC,USER123,PKE123,008,1#", "track", "USER123", "PKE123"), "ignored")
         self.assertEqual(p.remote_ack("*UClear,USER123,PKE123,OK#", "lock", "USER123", "PKE123"), "ignored")
+
+    def test_echo_and_bare_ok_never_confirm_vehicle_action(self):
+        echo = "*RE,USER123,PKE123,12345678,SYNTHETIC#"
+        self.assertEqual(p.remote_ack(echo, "refresh", "USER123", "PKE123", command_echo=echo), "ignored")
+        self.assertEqual(p.remote_ack(",OK#", "find", "USER123", "PKE123"), "ignored")
+        parser = p.FrameBuffer()
+        self.assertEqual(parser.feed(b"*UF,USER123,PKE123,O"), [])
+        self.assertEqual(parser.feed(b"K#"), ["*UF,USER123,PKE123,OK#"])
 
 
 class HttpAndSettingsTests(unittest.TestCase):

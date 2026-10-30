@@ -143,8 +143,24 @@ def rsa_encrypt(plaintext: bytes, *, version="1.3.0", padding: bytes | None = No
 
 
 def build_packets(*args, version="1.3.0", **kwargs) -> tuple[bytes, bytes]:
+    """Offline Native RSA envelopes, NOT a verified live transport.
+
+    Kept for compatibility with the original example. Live 2026-10-30 probes
+    received no authentication response to either bundled RSA key; see evidence.
+    """
     plain = build_plaintexts(*args, **kwargs)
     return rsa_encrypt(plain.authentication, version=version), rsa_encrypt(plain.command, version=version)
+
+
+def build_text_frames(*args, **kwargs) -> tuple[bytes, bytes]:
+    """Text transport candidate: authentication verified, vehicle action pending.
+
+    This serializer appends one # to the Native command plaintext. That framing
+    choice is not proof that all nine commands are accepted by a live vehicle.
+    Inner AES signatures remain intact. No network I/O is performed here.
+    """
+    plain = build_plaintexts(*args, **kwargs)
+    return plain.authentication, plain.command.rstrip(b"#") + b"#"
 
 
 def bluetooth_signature(mcuid: str, pke_code: str, challenge: str) -> str:
@@ -234,10 +250,14 @@ def bluetooth_ack(frame: str, pke_code: str, action: str) -> str:
     return "ignored"
 
 
-def remote_ack(frame: str, command: str, user_code: str, pke_code: str) -> str:
+def remote_ack(frame: str, command: str, user_code: str, pke_code: str, *, command_echo: str | None = None) -> str:
     """Conservative interpretation; 'received' never implies physical success."""
     if command not in COMMANDS:
         raise ValueError("unknown command")
+    if frame == command_echo:
+        return "ignored"
+    if frame in (",OK#", ",FAIL#"):
+        return "ignored"  # No command/vehicle identity; not a vehicle ACK.
     f = fields(frame)
     prefix = PREFIXES[COMMANDS.index(command)]
     ac_code = {"freeze": "009", "unfreeze": "010", "track": "007", "untrack": "008"}.get(command)
