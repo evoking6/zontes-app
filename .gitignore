@@ -1,0 +1,12 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.secrets/
+*.apk
+*.ipa
+*.p12
+*.mobileprovision
+*.so
+*private*.pem

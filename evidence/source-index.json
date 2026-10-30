@@ -1,0 +1,405 @@
+{
+  "schema": 1,
+  "verified_on": "2026-10-30",
+  "scope": "Two protocol documents; native encoding verified offline; no vehicle commands or real account requests in this run. iOS source re-read from the existing project over SSH.",
+  "samples": [
+    {
+      "name": "ShiRide 1.2.25-46 APK",
+      "sha256": "e429eb6ce80e0ad9420ba7e28001e3f18b6d139aed1b73f3d6d224545ce9742b"
+    },
+    {
+      "name": "ShiRide 1.2.25 ARM64 libc9x.so",
+      "sha256": "a53d71fde32efc7a9183d45a34720bbc7d68591ddfeb6c88ce8f8eef645db01d"
+    },
+    {
+      "name": "ShiRide 1.3.0-50 APK",
+      "sha256": "f35c9c0ad15d9459ff3dc1344f45970d5d397d92625c78f6d008c4bde32ca6b4"
+    },
+    {
+      "name": "ShiRide 1.3.0 ARM64 libc9x.so",
+      "sha256": "d838bc39f0e56127ab68a9e460e5f4a17dc0aef2f284f0a51fa499d649ee3ea3"
+    }
+  ],
+  "native_entry_points": {
+    "1.2.25": {
+      "remote_plaintext": "0x95078",
+      "bluetooth_q1_pure_builder": "0x95c6c",
+      "whitebox": "0x92590",
+      "rsa_padding": "0x91cb8",
+      "rsa_modexp": "0x90cc0"
+    },
+    "1.3.0": {
+      "remote_packet_builder": "0x972d4",
+      "bluetooth_q1_pure_builder": "0x97d30",
+      "rsa_padding": "0x94c7c",
+      "rsa_modexp": "0x93c84"
+    }
+  },
+  "native_methodology": "Map ELF PT_LOAD; apply relocations; model memory, mutex, random and time imports; stub app environment gate for isolation; execute original packet and crypto instructions. Never a live app-signature or server-authorization test. Addresses are version-specific.",
+  "source_files": [
+    {
+      "path": "ZontesInfrastructure/API/OfficialAPIClient.swift",
+      "sha256": "b8c30f32702adc996366ac5201aa24491c0b32d53c4bfd9dd517dd93ed4de807",
+      "symbols": [
+        {
+          "name": "signIn",
+          "lines": [
+            17,
+            106
+          ]
+        },
+        {
+          "name": "fetchUserProfile",
+          "lines": [
+            198
+          ]
+        },
+        {
+          "name": "refresh",
+          "lines": [
+            28,
+            153
+          ]
+        },
+        {
+          "name": "fetchVehicles",
+          "lines": [
+            39
+          ]
+        },
+        {
+          "name": "send",
+          "lines": [
+            218
+          ]
+        }
+      ]
+    },
+    {
+      "path": "ZontesInfrastructure/API/VehiclePayloadMapper.swift",
+      "sha256": "ee56e7f4954f80ee65dbeb4948f5d76df1c75af636432e27b4def4ae53e774b2",
+      "symbols": [
+        {
+          "name": "vehicle",
+          "lines": [
+            12
+          ]
+        },
+        {
+          "name": "homeSnapshot",
+          "lines": [
+            46
+          ]
+        },
+        {
+          "name": "merge",
+          "lines": [
+            109
+          ]
+        }
+      ]
+    },
+    {
+      "path": "ZontesInfrastructure/API/LiveRepositories.swift",
+      "sha256": "26845cb08182efcaccc837a871a1b0ae7654c9a30c8c0a33783038ad82223377",
+      "symbols": [
+        {
+          "name": "restoredSession",
+          "lines": [
+            13
+          ]
+        },
+        {
+          "name": "renewSession",
+          "lines": [
+            25
+          ]
+        }
+      ]
+    },
+    {
+      "path": "ZontesInfrastructure/RemoteControl/RemoteControlPacketBuilder.swift",
+      "sha256": "65a4e27ca14188614ae46c938de59471d506ef2ad1da62ade744c973734a70b3",
+      "symbols": [
+        {
+          "name": "build",
+          "lines": [
+            52
+          ]
+        },
+        {
+          "name": "signature",
+          "lines": [
+            106
+          ]
+        },
+        {
+          "name": "commandText",
+          "lines": [
+            154
+          ]
+        }
+      ]
+    },
+    {
+      "path": "ZontesInfrastructure/RemoteControl/BluetoothControlPacketBuilder.swift",
+      "sha256": "e8900658534ee958f28acc6a4457cbabd18dfed63f2c13044559bd6ee9702af5",
+      "symbols": [
+        {
+          "name": "build",
+          "lines": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "path": "ZontesInfrastructure/RemoteControl/BluetoothControlService.swift",
+      "sha256": "d039237c03186216a2d337492ae418d4e60cccb44ef2957e90e5f930fb32ddd1",
+      "symbols": [
+        {
+          "name": "handleFrame",
+          "lines": [
+            326
+          ]
+        },
+        {
+          "name": "matchesTarget",
+          "lines": [
+            181
+          ]
+        },
+        {
+          "name": "sendASCII",
+          "lines": [
+            281
+          ]
+        },
+        {
+          "name": "evaluate",
+          "lines": [
+            13
+          ]
+        }
+      ]
+    },
+    {
+      "path": "ZontesInfrastructure/RemoteControl/WhiteBoxTransform.swift",
+      "sha256": "9b9fb05746fe2a2dcb925d9c1708dd784d5490258c4f1df7dc97baad3f26ff71",
+      "symbols": [
+        {
+          "name": "apply",
+          "lines": [
+            16
+          ]
+        }
+      ]
+    },
+    {
+      "path": "ZontesInfrastructure/RemoteControl/RemoteControlTCPClient.swift",
+      "sha256": "c4f4f469f142183234423ee801a7509e9189123eaebf72f206621aad949574fc",
+      "symbols": [
+        {
+          "name": "sendAuthentication",
+          "lines": [
+            114
+          ]
+        },
+        {
+          "name": "sendCommand",
+          "lines": [
+            147
+          ]
+        },
+        {
+          "name": "validate",
+          "lines": [
+            181
+          ]
+        },
+        {
+          "name": "execute",
+          "lines": [
+            27,
+            268,
+            322
+          ]
+        }
+      ]
+    },
+    {
+      "path": "ZontesInfrastructure/RemoteControl/RemotePublicKeyProvider.swift",
+      "sha256": "fb9e9434aa2d3ed4ea4d7c89b0783b4761c42dc559094d28e3a409ba23cfd340",
+      "symbols": [
+        {
+          "name": "refresh",
+          "lines": [
+            144
+          ]
+        },
+        {
+          "name": "verify",
+          "lines": [
+            200
+          ]
+        },
+        {
+          "name": "persist",
+          "lines": [
+            192
+          ]
+        }
+      ]
+    },
+    {
+      "path": "ZontesFeatures/App/AppModel.swift",
+      "sha256": "07b995921ad1aac872bf0ed2b6b50c91f689669c4329560dba5807c80497acd3",
+      "symbols": [
+        {
+          "name": "signIn",
+          "lines": [
+            191
+          ]
+        },
+        {
+          "name": "execute",
+          "lines": [
+            562
+          ]
+        },
+        {
+          "name": "renewSessionOrExpire",
+          "lines": [
+            541
+          ]
+        },
+        {
+          "name": "startCommandStateSynchronization",
+          "lines": [
+            617
+          ]
+        }
+      ]
+    },
+    {
+      "path": "ZontesRideTests/RemoteControlPacketBuilderTests.swift",
+      "sha256": "2862f67fe030246228700af61d6a92ad7a1e169eefda87c52ff1b9e8145d6185",
+      "symbols": [
+        {
+          "name": "testKnownWhiteBoxVectors",
+          "lines": [
+            31
+          ]
+        },
+        {
+          "name": "testBluetoothAccessoryPacketsMatchNativeQ1Vectors",
+          "lines": [
+            82
+          ]
+        }
+      ]
+    },
+    {
+      "path": "ShiRide-1.3.0/jadx/defpackage/hea.java",
+      "sha256": "a712bbbfc89e46591389f354c131bbdf5a2b7f17ffb8c4f99d9f0685f1fa1512",
+      "topic": "login form / password compatibility"
+    },
+    {
+      "path": "ShiRide-1.3.0/jadx/defpackage/h40.java",
+      "sha256": "f78e01e69168301e4bdc380ac34a11ab321ad426a4a0b223b8e1392d3bab8d39",
+      "topic": "login / profile / legacy bootstrap"
+    },
+    {
+      "path": "ShiRide-1.3.0/jadx/defpackage/bd9.java",
+      "sha256": "e8c03a25ba4e17cb9fc5a898ac379baa489c54d52ffb8a8af29c65af79326db8",
+      "topic": "headers / HTTP wrappers / refresh"
+    },
+    {
+      "path": "ShiRide-1.3.0/jadx/defpackage/oz8.java",
+      "sha256": "32de2d00b842dd2d25e7de06f38cd27c6ff36ab935d61bdff3c24528def8a40c",
+      "topic": "selected vehicle / 6 state confirmation reads"
+    },
+    {
+      "path": "ShiRide-1.3.0/jadx/defpackage/vv4.java",
+      "sha256": "d9f81b3c483e7873ec1a84f6c0b0732bdd96c9aaa045edaa260c78e7141fc079",
+      "topic": "authorization"
+    },
+    {
+      "path": "ShiRide-1.3.0/jadx/defpackage/hx1.java",
+      "sha256": "bc00b07f9b11b2ba077db2712f378792079767a2529c26d8c9d45cf97b326b0c",
+      "topic": "remote identity snapshot"
+    },
+    {
+      "path": "ShiRide-1.3.0/jadx/defpackage/ba2.java",
+      "sha256": "59b0d7e4df62bf198ecfe0cdcc68f78fc1ecbab609d73de86c4da6383232c3d2",
+      "topic": "remote TCP / timeouts"
+    },
+    {
+      "path": "ShiRide-1.3.0/jadx/defpackage/jea.java",
+      "sha256": "7b753e932ca1adf6e9cfa4865daef71c5910c7281a4022d6ac4010e826791199",
+      "topic": "remote ACK / AC / diagnostics"
+    },
+    {
+      "path": "ShiRide-1.3.0/jadx/defpackage/el0.java",
+      "sha256": "08aa8e42d2a4bee03d55b6c54f7e5bb063f08e0773fd31da15ce944a05d6d37c",
+      "topic": "BLE runtime / prime / challenge / command"
+    },
+    {
+      "path": "ShiRide-1.3.0/jadx/defpackage/vk0.java",
+      "sha256": "9343651e5dd60f7f38d60c7300f0cbfc34cb3f180b62ee990387709c986d2faa",
+      "topic": "GATT / CCCD / MTU / response parser"
+    },
+    {
+      "path": "ShiRide-1.3.0/jadx/defpackage/gea.java",
+      "sha256": "5e4277d911c4325ef92c3e0ecc992fe5a891d58cb39e3f1f94a6bb7d6804d722",
+      "topic": "BLE acknowledgment and challenge recognition"
+    },
+    {
+      "path": "ShiRide-1.3.0/jadx/defpackage/yk0.java",
+      "sha256": "0c11db7ced5059d24997754a5a8d8f8d32ed596cb9470833c927d0776899cc38",
+      "topic": "BLE action enum"
+    },
+    {
+      "path": "ShiRide-1.3.0/jadx/defpackage/sk0.java",
+      "sha256": "1166ef711d6e3ef2e4cccc85d2caed310a6c976b96c3b4f588c155e3be7c5b2d",
+      "topic": "prime / raw AT wait"
+    },
+    {
+      "path": "ShiRide-1.3.0/jadx/defpackage/tk0.java",
+      "sha256": "7cdbff9298b8555bee7bf609232656e9b013f82871e43987c03f2e33691f4279",
+      "topic": "READ_PARAM / challenge timeout"
+    },
+    {
+      "path": "ShiRide-1.3.0/jadx/defpackage/wv9.java",
+      "sha256": "b80f2f050e805881b07166bb34c4a7715c037ee3f32a0ba97c132a55c960dabd",
+      "topic": "AT SET_PARAM / READ_PARAM parser"
+    },
+    {
+      "path": "ShiRide-1.3.0/jadx/defpackage/iz8.java",
+      "sha256": "2e05f1ec173fb0b9248e857e2b325c0723cd77f2b03c7d392df17b84d50a98a9",
+      "topic": "parameter model field names"
+    },
+    {
+      "path": "ShiRide-1.3.0/jadx/defpackage/uv8.java",
+      "sha256": "f87767feffaf244be9cf84149b995fb79bccaedc3b0198b4e9f3a67fd5479076",
+      "topic": "key detection mode enum values"
+    },
+    {
+      "path": "ShiRide-1.3.0/jadx/defpackage/ko8.java",
+      "sha256": "1de55e84f68c0f6ab91ed67b21a64addf218cd658c7743f11eefbe4602098e78",
+      "topic": "RGB wire encoding"
+    },
+    {
+      "path": "ShiRide-1.3.0/jadx/defpackage/lh9.java",
+      "sha256": "4944940fc6724301a9e532612ac9f86e27f74703df514538f32ed4467df3dc9e",
+      "topic": "advertisement target matching"
+    }
+  ],
+  "published_resources_sha256": {
+    "resources/c9x_tables.bin": "58234bb81e68933db3f244003817a622c7a866c332bec8b5d6164e128d887d07",
+    "resources/remote-rsa-shiride-1.2.25.pem": "075e11680cfb805ff3857470d5dc933442cfbed2b8ae414d19b7ecbea3d2aa85",
+    "resources/remote-rsa-shiride-1.3.0.pem": "4151a40086e9a9df89fee648a61a5bf7bcc22612a12844c55ca6ef7c5d38b3d3",
+    "resources/whitebox.json": "11ce5e668191ec331789d7cabc0ef798115d9784286660428c696bfe0a8dd20a"
+  },
+  "excluded": "APKs/SOs, private signing material, account tokens, real vehicle identities and locations; source files indexed by hash are not wholesale republished."
+}

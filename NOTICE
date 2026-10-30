@@ -1,0 +1,15 @@
+This repository contains independently written interoperability documentation,
+reference implementations and synthetic fixtures. The MIT license applies to
+those original contributions.
+
+resources/c9x_tables.bin is decoded protocol lookup data recovered from the
+identified ShiRide native library. resources/remote-rsa-shiride-*.pem contain
+public protocol keys extracted from the identified application samples.
+These compatibility resources are accompanied by source fingerprints and are
+not user credentials or private keys. This repository does not claim ownership
+of, or grant a new license to, the original third-party application, native
+library, embedded third-party material, trademarks or vehicle firmware.
+
+No APK, native SO, private signing key, real account token, real MCUID, vehicle
+location or personal vehicle record is included. ShiRide, Zontes and other
+product names identify the analyzed products; no affiliation is implied.

@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-30",
+  "method": "Unicorn ARM64 execution of original native protocol routines; environment gate stubbed for offline isolation; OS memory/random/time calls modeled; no JNI app integrity test, cloud access, BLE transmission or vehicle operation",
+  "remote_1_3_0": {
+    "commands": 9,
+    "plaintexts_compared": 18,
+    "rsa_ciphertexts_compared": 18,
+    "result": "pass"
+  },
+  "bluetooth": {
+    "distinct_vectors": 96,
+    "native_versions": [
+      "1.2.25",
+      "1.3.0"
+    ],
+    "total_packet_comparisons": 192,
+    "result": "pass"
+  },
+  "inputs": "All account, installation, MCUID, PKE and challenge values are synthetic. See vectors/*.json.",
+  "whitebox": {
+    "vectors": 18,
+    "native_version": "1.2.25",
+    "result": "pass"
+  }
+}
