@@ -191,8 +191,8 @@ class DocumentationTests(unittest.TestCase):
             for code in re.findall(r"```python\n(.*?)\n```", path.read_text(), re.S):
                 exec(compile(code, str(path), "exec"), {"__name__": "documentation_example"})
 
-    def test_two_protocol_documents_and_local_links_resolve(self):
-        self.assertEqual({f.name for f in (ROOT / "docs").glob("*.md")}, {"远端控车协议.md", "蓝牙控车协议.md"})
+    def test_three_protocol_documents_and_local_links_resolve(self):
+        self.assertEqual({f.name for f in (ROOT / "docs").glob("*.md")}, {"远端控车协议.md", "蓝牙控车协议.md", "行车记录仪协议.md"})
         for path in [ROOT / "README.md", *(ROOT / "docs").glob("*.md")]:
             text = path.read_text()
             self.assertEqual(len(re.findall(r"^```", text, re.M)) % 2, 0, path)
@@ -203,7 +203,9 @@ class DocumentationTests(unittest.TestCase):
 
     def test_resources_match_recorded_hashes(self):
         index = json.loads((ROOT / "evidence/source-index.json").read_text())
-        for name, digest in index["published_resources_sha256"].items():
+        dvr = json.loads((ROOT / "evidence/dashcam-verification.json").read_text())
+        recorded = {**index["published_resources_sha256"], **dvr["published_fixture_sha256"]}
+        for name, digest in recorded.items():
             self.assertEqual(hashlib.sha256((ROOT / name).read_bytes()).hexdigest(), digest)
 
     def test_no_binary_apps_private_keys_or_local_absolute_paths(self):

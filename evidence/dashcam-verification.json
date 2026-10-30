@@ -1,0 +1,278 @@
+{
+  "schema": 1,
+  "verified_on": "2026-10-30",
+  "firmware": "JC_703T25_V02.26.02.02.60",
+  "scope": "DVR file browsing/playback/download documentation. Static firmware analysis plus synthetic client playback. No real footage or hotspot credentials published. Real instrument playback/download remains unaccepted.",
+  "firmware_artifacts": [
+    {
+      "path": "usr/bin/DVR",
+      "sha256": "7fa62fab207207a4478b5ba22fc4e624b7ba1b3ee8aa039437b8575b6f65cbb3"
+    },
+    {
+      "path": "etc/configl/config_dvr.ini",
+      "sha256": "26bb4e775cf539bb3de4c8d9f9ba71c986e8090f7a04b161f5a6bacba0059fed"
+    },
+    {
+      "path": "etc/hostapd.sh",
+      "sha256": "d7ab2541fef537b880b8a53d62db4e779f92de03aab75fb10b5f20dd0826976e"
+    },
+    {
+      "path": "etc/udhcpd.conf",
+      "sha256": "c0c560aeb812bf7c55cef447f1b6bf8943d38214ea6275e3cb27d3b15b2a6094"
+    }
+  ],
+  "client_sources": [
+    {
+      "path": "ZontesFeatures/Dashcam/DashcamTransport.swift",
+      "sha256": "f2f139d489eda938443e5e207d497c1f1c45ff0a81f439aeea9b6c4661baa2d4"
+    },
+    {
+      "path": "ZontesFeatures/Dashcam/DashcamView.swift",
+      "sha256": "4e788410f8305b1c1b20976d185a802a8a22e1450082aaac47230fbdd33fff83"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E1",
+      "topic": "Local Wi-Fi and HTTP configuration",
+      "sources": [
+        "etc/hostapd.sh",
+        "etc/udhcpd.conf",
+        "etc/configl/config_dvr.ini"
+      ],
+      "facts": {
+        "interface": "wlan0",
+        "host": "192.168.3.1",
+        "netmask": "255.255.255.0",
+        "dhcp_start": "192.168.3.20",
+        "dhcp_end": "192.168.3.254",
+        "http_port": 7686,
+        "configured_legacy_tcp_ip": "192.168.2.1",
+        "configured_video_tcp_port": 54323,
+        "configured_control_tcp_port": 54345,
+        "minThreads": 4,
+        "maxThreads": 12,
+        "readTimeout_ms": 6000,
+        "maxRequestSize": 102400,
+        "maxMultiPartSize": 102400,
+        "picWidth": 0,
+        "picHeight": 0,
+        "picQuality": 0
+      },
+      "limitations": "Configuration is static evidence, not a current live endpoint probe. No hotspot SSID/password included."
+    },
+    {
+      "id": "E2",
+      "topic": "JSON routing and VIDEO.DATE",
+      "function": "HttpServer::service",
+      "entry": "0x436200",
+      "locations": {
+        "content_type_branch": "0x436684",
+        "date_branch_comparison": "0x4372fc",
+        "date_helper_call": "0x437474",
+        "helper": "HttpServer::getVideoDate at 0x435670"
+      },
+      "facts": [
+        "Header Content-Type containing case-sensitive application/json selects JSON command handling; non-JSON requests select file handling.",
+        "POST / is the existing client form; this service does not enforce POST/root exclusively.",
+        "VIDEO.DATE normally emits METHOD, code, dateList, previewType. front maps to 1, rear to 2.",
+        "Selected empty data source returns -1; helper success returns 0.",
+        "Dates use device localtime and YYYY-MM-DD. Output ordering must not be generalized to all camera combinations.",
+        "A pre-command state gate emits code 5; its exact business meaning is unknown."
+      ]
+    },
+    {
+      "id": "E3",
+      "topic": "VIDEO.INFO.LIST filtering and pagination",
+      "function": "HttpServer::service",
+      "entry": "0x436200",
+      "helper": "HttpServer::getVideoContent at 0x435a10",
+      "locations": {
+        "helper_call": "0x437828",
+        "normal_code_zero": "0x4378ac",
+        "ascending_page": "0x437948",
+        "descending_page": "0x438c70"
+      },
+      "request_fields": [
+        "METHOD",
+        "previewType",
+        "date",
+        "index",
+        "num",
+        "sort",
+        "time"
+      ],
+      "normal_response_fields": [
+        "METHOD",
+        "code",
+        "videoBeanList"
+      ],
+      "facts": [
+        "index is a zero-based page number; num is a JSON integer count.",
+        "asc start=p*k, last=min(p*k+k-1,N-1); des start=N-1-p*k, last=max(N-1-p*k-k+1,0).",
+        "sort accepts only asc/des; an unknown sort can fail to advance the index for a nonempty list.",
+        "Integer overflow and nonpositive page size are not defended by this firmware branch. Client bounds are implementation policy.",
+        "Literal string NULL disables hour filtering; JSON null/empty/omitted time do not mean the same thing.",
+        "Other time strings are split by hyphen and matched against unpadded hour strings (8-9 means hour 8 OR 9, not an interval).",
+        "Normal response writes code=0 even if helper yields no matching entries; no total/hasMore/date/index echo confirmed.",
+        "asc/des traverse the helper list; do not promise globally timestamp-sorted cross-camera results."
+      ]
+    },
+    {
+      "id": "E4",
+      "topic": "Record metadata and media URL construction",
+      "function": "HttpServer::service",
+      "entry": "0x436200",
+      "locations": {
+        "front_play_url": "0x437e04",
+        "rear_play_url": "0x437f0c",
+        "record_time": "0x437fc0",
+        "front_thumbnail": "0x438108",
+        "config_reader": "DvrConfig::GetConfig(http_server_info&) at 0x417710"
+      },
+      "record_fields": {
+        "duration": "JSON number, raw integer seconds metadata",
+        "exigency": "JSON string false, fixed by this list branch",
+        "id": "JSON number, also used as device time_t input to localtime",
+        "name": "JSON string from file record",
+        "angle": "front/rear when matching filename branch",
+        "playUrl": "host:port plus media path; no http:// in current configured form",
+        "recordTime": "HH-mm-ss device local time",
+        "size": "JSON signed integer, bytes through 32-bit storage",
+        "thumbUrl": "remove final four filename bytes, append .jpg under OnePicture directory",
+        "title": "HH:mm device local time"
+      },
+      "format": "%s:%s%s/%s/%s/%s",
+      "video_roots": {
+        "front": "/media/emmc/videostoragefolder/frontVideo0/",
+        "rear": "/media/emmc/videostoragefolder/rearVideo1/"
+      },
+      "thumbnail_roots": {
+        "front": "/media/emmc/videostoragefolder/frontOnePicture/",
+        "rear": "/media/emmc/videostoragefolder/rearOnePicture/"
+      },
+      "limitations": "URI generation does not prove the referenced file/JPEG exists. Keep media path opaque; no universal filename pattern is specified."
+    },
+    {
+      "id": "E5",
+      "topic": "HTTP media and Range implementation limits",
+      "function": "HttpServer::service",
+      "entry": "0x436200",
+      "locations": {
+        "mime_function": "HttpServer::setContentType at 0x434950",
+        "range_status_206": "0x436d4c",
+        "range_status_416": "0x437018",
+        "last_chunk_read": "0x439118",
+        "last_chunk_write": "0x439134",
+        "last_chunk_loop_jump": "0x439148 -> 0x4390d0",
+        "other_static_controller": "StaticFileController::service at 0x47e850"
+      },
+      "facts": [
+        "MP4 MIME is video/mp4 with Accept-Ranges: bytes. File missing/unreadable branches return 404/403.",
+        "No-range path sets whole-file Content-Length and reads file data.",
+        "Range parsing uses fixed header substring/split and signed integer conversion; it is not a full RFC parser.",
+        "End value 0 is treated like omitted end; bytes=0-0 is not a reliable one-byte probe.",
+        "Limited-end loop can continue after the last intended chunk until EOF/connection loss, producing more body bytes than declared. This was checked in original AArch64 instructions, not just decompiler output.",
+        "Range handling is after a cache-hit branch.",
+        "HEAD body suppression, suffix/multipart ranges, If-Range and large offsets were not verified.",
+        "416 formatting and requested-end clamping are not reliably standards-compliant."
+      ],
+      "limitations": "A 206 branch and normal local replay do not establish real-vehicle player/seek/resume compatibility."
+    },
+    {
+      "id": "E6",
+      "topic": "Client bug reproduction and playback verification",
+      "facts": [
+        "Old client parsed scheme-less host:port URL as nil and disabled list button.",
+        "Normalization fixes this for the known instrument HTTP authorities.",
+        "Synthetic local H264 MP4 decoded to 640x360 with the real Swift AVPlayer playback code on both local and remote Mac.",
+        "Local replay observed GET bytes=0-1 -> 206 (2 bytes), then GET bytes=0-17071 -> 206 (17072 bytes)."
+      ],
+      "local_replay_uses_original_dvr_process": false,
+      "local_replay_uses_real_vehicle_media": false,
+      "ios_1_2_3_tests": {
+        "total": 93,
+        "passed": 91,
+        "skipped": 2,
+        "failed": 0
+      },
+      "user_report": "Real instrument recording list can be fetched. No confirmation of fixed real instrument playback/download received.",
+      "real_instrument_playback_accepted": false,
+      "real_instrument_download_accepted": false
+    },
+    {
+      "id": "E7",
+      "topic": "Existing client Wi-Fi handling",
+      "sources": [
+        "ZontesFeatures/Settings/SettingsView.swift: RelayBikeWifiQRCode",
+        "ZontesFeatures/Settings/InstrumentOTAWiFiModel.swift"
+      ],
+      "facts": [
+        "Client accepts supported WIFI: QR fields S/P/T and handles backslash escapes.",
+        "Saved credentials/configuration acceptance do not establish file-service reachability."
+      ],
+      "limitations": "This is a known client format, not proof all projection QR payloads or signing teams support automatic joining. No credentials included."
+    },
+    {
+      "id": "E8",
+      "topic": "Metadata units and storage limits",
+      "functions": {
+        "front_insert_sql": "FrontVideoRecord::insertSQL at 0x45c6c0",
+        "sql_insert": "SQLManager::insertSql at 0x422620"
+      },
+      "locations": {
+        "hour_multiplier": "0x45d20c: mov w3,#0x168",
+        "hour_combine": "0x45d218: madd w0,w0,w3,w1"
+      },
+      "facts": [
+        "size comes from QFile::size(), stored in a 32-bit slot and serialized as JSON int; bytes, not KB/MB.",
+        "duration parses FFmpeg Duration hours:minutes:seconds.fraction, drops the fraction and computes minutes*60+hours*360+seconds.",
+        "Do not use the defective duration field instead of decoded media duration, or the 32-bit size as an integrity checksum."
+      ]
+    },
+    {
+      "id": "E9",
+      "topic": "Other statically identified commands; not exercised",
+      "function": "HttpServer::service at 0x436200",
+      "query_names": [
+        "VIDEO.TIME",
+        "RECORD.STATUS",
+        "DPI.STATUS",
+        "LOOPE.STATUS",
+        "SYS.VERSION",
+        "PICTURE.INFO.LIST"
+      ],
+      "write_or_control_names": [
+        "RECORD.CONTROL",
+        "DVR.FORAMT",
+        "VIDEO.DELETE",
+        "VIDEO.DELETE.ALL",
+        "VIDEO.TIME.DELETE",
+        "FACTORY.RESET",
+        "VIDEO.DPI",
+        "LOOP.RECORD",
+        "DVR.RESET",
+        "PHONE.TIME",
+        "PICTURE.FILE.DELETE",
+        "PICTURE.DELETE.ALL"
+      ],
+      "implemented_by_reference": [
+        "VIDEO.DATE",
+        "VIDEO.INFO.LIST"
+      ],
+      "limitations": "No vehicle actions executed; full optional schemas/enums are not presented as verified."
+    }
+  ],
+  "published_fixture_sha256": {
+    "vectors/dashcam.json": "a1a1f2b7edcbd45e014dd4ab4bede28e249bc8f2e12faebdb18a5bbff5b81073"
+  },
+  "not_included": [
+    "original firmware binaries",
+    "full decompilation",
+    "hotspot credentials",
+    "real videos/photos",
+    "accounts/tokens",
+    "vehicle identities/locations",
+    "on-device private logs"
+  ]
+}

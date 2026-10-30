@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "synthetic": true,
+  "firmware": "JC_703T25_V02.26.02.02.60",
+  "date_response": {
+    "METHOD": "VIDEO.DATE",
+    "code": 0,
+    "previewType": "front",
+    "dateList": [
+      "2026-10-30",
+      "2026-10-29"
+    ]
+  },
+  "list_request": {
+    "METHOD": "VIDEO.INFO.LIST",
+    "previewType": "front",
+    "date": "2026-10-30",
+    "index": 0,
+    "num": 50,
+    "sort": "des",
+    "time": "NULL"
+  },
+  "list_response": {
+    "METHOD": "VIDEO.INFO.LIST",
+    "code": 0,
+    "videoBeanList": [
+      {
+        "duration": 180,
+        "exigency": "false",
+        "name": "front_20261030_112600.mp4",
+        "angle": "front",
+        "playUrl": "192.168.3.1:7686/media/emmc/videostoragefolder/frontVideo0/front_20261030_112600.mp4",
+        "recordTime": "11-26-00",
+        "size": 12345678,
+        "thumbUrl": "192.168.3.1:7686/media/emmc/videostoragefolder/frontOnePicture/front_20261030_112600.jpg",
+        "title": "11:26",
+        "id": 1793330760
+      }
+    ]
+  },
+  "normalized_play_url": "http://192.168.3.1:7686/media/emmc/videostoragefolder/frontVideo0/front_20261030_112600.mp4",
+  "normalized_thumbnail_url": "http://192.168.3.1:7686/media/emmc/videostoragefolder/frontOnePicture/front_20261030_112600.jpg",
+  "notes": [
+    "Names, dates, sizes and durations are synthetic examples, not exported vehicle records.",
+    "The thumbnail filename strips the last four video filename characters before adding .jpg.",
+    "duration and exigency are retained raw; values are not proof of media duration or event semantics.",
+    "exigency is the literal string false in this firmware list branch, not a boolean or integer."
+  ]
+}
