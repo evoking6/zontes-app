@@ -1,0 +1,15 @@
+{
+  "user_code": "USER123",
+  "device_id": "DEVICE123",
+  "transport_device_id": "sV+XciJtoQgUFUUVuleyh2IZ",
+  "mcuid": "00112233445566778899aabbccddeeff",
+  "pke_code": "PKE123",
+  "authentication_nonce": "12345678",
+  "authentication_time": "20261030123456",
+  "command_nonce": "87654321",
+  "command_time": "20261030123457",
+  "authentication_plaintext": "*UL,USER123,DEVICE123,0.0,0.0,b+dviilLWwPXj4n8BanZzw==,wwI+XeM77lrXhBE3FxqlFYdq6VyZwrX047dOKyEIeLuZ497niV99Q+mU8lNF2H9q,1.59#",
+  "command_plaintext": "*RE,USER123,PKE123,0Vq/PMpT9CVd029MsMiKVQ==,rlUGhLjtQZxRHwkiiMhvmNwZ1pPOkSA3EUN/1Z8FcS0pQF+DNAv0i3wCY7PFRBJG",
+  "authentication_wire": "yVO6LhSlYrt1oYeCDZ3DsvkoG/XnGnTNjSo6bVseowUD4kYgUo/61Eo4nasgC1LskUMUnN5tF3an53zWWtSACAtgAwh34gJYib/3qIEFPH+jB62rhAuCvAQ+YcfZWoQYc99qxZ2tvbx7itDGK+OwK1zacl9T5/d8CrJ92cz9GiWlt6owBL+qpQJYWYQp2T55vf0YJKlfFwyWOHgxeUFF0I6aiH9t2CKSyZXl3MSg5a4=",
+  "command_wire": "8hbjsVcQofW7zVSfjxSRZ5mDbyKG/nsrC7km6qorbFfaYnwWFZYlJw9AT+05UWHK01fHWQrg2ZdJEdJBzZXVJnSID0kvpChr55Dp4s84nmCeKTSuqls5gon9tIKePoUOG9L7uJ7ejWLHNByixWrmsRbW1RjXeNk4tII+86n2c5ZdwEap+iuIRdCCk5bvS/fr5LXpY8QC1eHUyRiCCXbaQQ=="
+}

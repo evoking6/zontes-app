@@ -4,6 +4,14 @@ from protocol import ROOT, build_plaintexts, rsa_encrypt, bluetooth_command, whi
 
 
 def main():
+    from remote159 import build_packets as build_current
+    v = json.loads((ROOT / "vectors/remote-159.json").read_text())
+    p = build_current("refresh", v["user_code"], v["device_id"], v["mcuid"], v["pke_code"],
+                      auth_nonce=v["authentication_nonce"], auth_time=v["authentication_time"],
+                      command_nonce=v["command_nonce"], command_time=v["command_time"])
+    assert p.authentication.decode() == v["authentication_wire"]
+    assert p.command.decode() == v["command_wire"]
+    print("current Android 1.59: auth/read CBC vectors match; iOS login port and physical actions pending")
     for version in ("1.2.25", "1.3.0"):
         fixture = json.loads((ROOT / f"vectors/remote-{version}.json").read_text())
         for vector in fixture["vectors"]:
@@ -12,7 +20,7 @@ def main():
                 expected = vector[name]
                 assert plain.decode() == expected["plaintext"]
                 assert rsa_encrypt(plain, version=version, padding=bytes.fromhex(expected["test_padding_hex"])).hex() == expected["ciphertext_hex"]
-        print(f"remote {version}: 9 commands / 18 RSA packets match native fixtures")
+        print(f"historical remote {version}: 9 commands / 18 RSA packets match native fixtures")
     fixture = json.loads((ROOT / "vectors/bluetooth.json").read_text())
     for v in fixture["vectors"]:
         packet = bluetooth_command(v["action"], v["pke_code"], v["mcuid"], v["challenge"])

@@ -1,0 +1,23 @@
+{
+  "apk_version": "1.59",
+  "apk_sha256": "b2660f08e463c0581083ea5556142bc7a14f5306b67665098859e4cb6ea6874e",
+  "wrapping": {
+    "nonce": {
+      "key": "18e9f1381670004ba30cc31863359b53",
+      "iv": "20c174ae9d60e584a22ba2ddbe392413"
+    },
+    "signature": {
+      "key": "3076ac423a6cbcbf0bcbc41ae3e6ada2",
+      "iv": "a82f4c72d11a845200147ca128aa5069"
+    },
+    "device": {
+      "key": "48c15fa7cb886b3371afe8fcb4e6f37b",
+      "iv": "0a9570ebdbc0395baa5b69d7015af6ef"
+    },
+    "packet": {
+      "key": "9398f92938639494d205f199a4020c81",
+      "iv": "f850490f92ed70e895e127c3ccd4be62"
+    }
+  },
+  "seed_key": "5441594f425461315943576332675453"
+}

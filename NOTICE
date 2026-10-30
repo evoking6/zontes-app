@@ -13,3 +13,7 @@ library, embedded third-party material, trademarks or vehicle firmware.
 No APK, native SO, private signing key, real account token, real MCUID, vehicle
 location or personal vehicle record is included. ShiRide, Zontes and other
 product names identify the analyzed products; no affiliation is implied.
+
+resources/remote-159.json contains static interoperability parameters recovered
+from the identified official Android 1.59 sample. It contains no account token,
+real device identifier or BlueShield security image.

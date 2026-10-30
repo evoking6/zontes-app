@@ -7,7 +7,7 @@
     "publisher_certificate_sha256": "b5292bf4ca492326f07597e2676b58e1587bc7195758348f9b6f23888c9c171c",
     "apk_signature_verified": true
   },
-  "status": "incomplete",
+  "status": "tcp_read_verified_mpaas_ios_login_port_pending",
   "date": "2026-10-30",
   "confirmed": {
     "https_api_base": "https://tbox.zontesmotor.com/zontespkeapp/api",
@@ -26,15 +26,53 @@
       "*ULoc",
       "*UClear"
     ],
-    "business_dex_checksums_valid_count": 14
+    "business_dex_checksums_valid_count": 14,
+    "official_login_succeeded": true,
+    "authenticated_https_reads": {
+      "getUserCenterData": 200,
+      "getMyMotorList": 200,
+      "getHomeData": 200
+    },
+    "signer": "com.tayo.msbox.utils.d3.f",
+    "time_block": "14 ASCII digits plus 2 NUL bytes",
+    "nonce": "8 decimal characters parsed as 4 HEX bytes for key mixing",
+    "signature_hex_case": "lowercase",
+    "field_wrapping": "AES-128-CBC / PKCS7 / Base64",
+    "wrapping_kinds": [
+      "nonce",
+      "signature",
+      "device",
+      "packet"
+    ],
+    "native_cbc_comparisons_passed": 8,
+    "synthetic_original_signer_match": true,
+    "device_tag_source": "com.ta.utdid2.device.UTDevice.getUtdid(Context)",
+    "independent_18_byte_device_tag_verified": true,
+    "tcp_host": "www.sharpon.com",
+    "tcp_port": 4510,
+    "wire": "Base64 ASCII of CBC(inner + comma + CBC(device_tag))",
+    "current_rsa_transport": false,
+    "swift_real_client_live_auth_and_read": true,
+    "ios_build": "1.2.6 (29)",
+    "login_transport": {
+      "gateway": "https://mgw.mpaas.cn-hangzhou.aliyuncs.com/mgw.htm",
+      "operation_type": "com.tayo.msbox.login",
+      "content_type": "application/json",
+      "request_wrapper": "array of object with _requestBody",
+      "password_encoding": "original password inside TLS",
+      "sign_type": 0,
+      "original_sdk_offline_signature_match": true,
+      "full_rpc_headers_login_verified_on_mac": true,
+      "gateway_success_status": "1000",
+      "business_success_code": 200,
+      "ios_port_complete": false
+    }
   },
   "not_yet_verified": [
-    "current_vehicle_control_public_key",
-    "complete_current_authentication_packet",
-    "complete_current_vehicle_command_packet",
-    "current_login_and_post_login_control_initialization",
-    "current_service_authentication_and_read_only_vehicle_response",
-    "physical_vehicle_execution"
+    "ios_mpaas_signing_configuration_and_login_port",
+    "latest_token_refresh_operation_and_fields",
+    "physical_find_lock_unlock_execution",
+    "all_extended_command_layouts_and_vehicle_ack_semantics"
   ],
   "historical_remote_implementations_are_current_basis": false,
   "vehicle_actions_sent": false,
