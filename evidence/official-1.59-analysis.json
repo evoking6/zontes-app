@@ -1,0 +1,42 @@
+{
+  "basis": {
+    "package": "com.tayo.msbox",
+    "version_name": "1.59",
+    "version_code": 4825,
+    "apk_sha256": "b2660f08e463c0581083ea5556142bc7a14f5306b67665098859e4cb6ea6874e",
+    "publisher_certificate_sha256": "b5292bf4ca492326f07597e2676b58e1587bc7195758348f9b6f23888c9c171c",
+    "apk_signature_verified": true
+  },
+  "status": "incomplete",
+  "date": "2026-10-30",
+  "confirmed": {
+    "https_api_base": "https://tbox.zontesmotor.com/zontespkeapp/api",
+    "rsa_helper": {
+      "class": "a.nie",
+      "key_factory": "RSA",
+      "key_encoding": "Base64(X.509 SPKI DER)",
+      "cipher": "RSA/ECB/PKCS1Padding",
+      "executed_with_synthetic_data": true,
+      "test_key_bits": 2048,
+      "test_ciphertext_bytes": 256,
+      "vehicle_send_path_proven": false
+    },
+    "vehicle_command_prefix_literals": [
+      "*UF",
+      "*ULoc",
+      "*UClear"
+    ],
+    "business_dex_checksums_valid_count": 14
+  },
+  "not_yet_verified": [
+    "current_vehicle_control_public_key",
+    "complete_current_authentication_packet",
+    "complete_current_vehicle_command_packet",
+    "current_login_and_post_login_control_initialization",
+    "current_service_authentication_and_read_only_vehicle_response",
+    "physical_vehicle_execution"
+  ],
+  "historical_remote_implementations_are_current_basis": false,
+  "vehicle_actions_sent": false,
+  "private_material_included": false
+}
