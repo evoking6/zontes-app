@@ -8,7 +8,7 @@
 
 远程控车现以官方 Android **1.59 / 4825** 为唯一分析基准。旧 ShiRide 样本、旧文本兼容通道及旧 RSA 密钥已退出当前远控实现依据，旧说明已[归档](docs/history/远端控车协议-旧样本.md)。该项目为社区互操作资料，不是厂商发布的官方协议。
 
-**1.59 的 TCP 认证封装和签名只读刷新已验证；mPaaS 登录在 Mac 已验证，iOS 登录 400 尚待移植修复，物理控车仍待车主验收。** 新实现使用 AES-CBC/Base64 与设备标签；旧 RSA/文本兼容通道不用于当前实现。本轮仅登录和读取，未发送车辆动作。证据见[远端控车协议](docs/远端控车协议.md)和[分析记录](evidence/official-1.59-analysis.json)。
+**1.59 的 TCP 认证和签名只读刷新已验证；登录签名已原生移植到 Swift，真实登录、Token 刷新和车辆读取通过。iOS 1.2.7（30）已安装启动，手机交互与物理控车仍待车主验收。** 新实现使用 AES-CBC/Base64 与设备标签；旧 RSA/文本兼容通道不用于当前实现。本轮仅登录和读取，未发送车辆动作。证据见[远端控车协议](docs/远端控车协议.md)和[分析记录](evidence/official-1.59-analysis.json)。
 
 ## 快速验证
 
@@ -27,6 +27,8 @@ Python 3.10+。示例和测试仅构造/解析内存报文，不登录账号、�
 
 | 路径 | 内容 |
 |---|---|
+| [examples/mpaas_rpc.py](examples/mpaas_rpc.py) | 当前 RPC 登录/刷新签名、时间、JSON/设备头构造与状态码解析，纯离线 |
+| [vectors/mpaas-rpc.json](vectors/mpaas-rpc.json) | 经原 SDK 原函数验证的合成签名向量 |
 | [examples/remote159.py](examples/remote159.py) | 当前 1.59 签名和四套 CBC/设备标签封装，纯离线 |
 | [resources/remote-159.json](resources/remote-159.json) | APK 恢复并验证的 AES 参数 |
 | [vectors/remote-159.json](vectors/remote-159.json) | 合成认证/只读请求逐字节向量 |

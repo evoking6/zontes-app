@@ -10,3 +10,6 @@ __pycache__/
 *.mobileprovision
 *.so
 *private*.pem
+
+# Private application signing configuration is supplied separately.
+mpaas_signing_configuration.json

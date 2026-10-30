@@ -11,7 +11,12 @@ def main():
                       command_nonce=v["command_nonce"], command_time=v["command_time"])
     assert p.authentication.decode() == v["authentication_wire"]
     assert p.command.decode() == v["command_wire"]
-    print("current Android 1.59: auth/read CBC vectors match; iOS login port and physical actions pending")
+    print("current Android 1.59: auth/read CBC vectors match; physical actions pending")
+    from mpaas_rpc import build_request
+    m = json.loads((ROOT / "vectors/mpaas-rpc.json").read_text())
+    r = build_request(m["configuration"], m["fields"], m["device_id"], m["timestamp_milliseconds"])
+    assert r.headers["Sign"] == m["signature"] and r.body.decode() == m["body"]
+    print("current mPaaS: synthetic SDK signing vector matches; no network access")
     for version in ("1.2.25", "1.3.0"):
         fixture = json.loads((ROOT / f"vectors/remote-{version}.json").read_text())
         for vector in fixture["vectors"]:

@@ -7,7 +7,7 @@
     "publisher_certificate_sha256": "b5292bf4ca492326f07597e2676b58e1587bc7195758348f9b6f23888c9c171c",
     "apk_signature_verified": true
   },
-  "status": "tcp_read_verified_mpaas_ios_login_port_pending",
+  "status": "swift_login_refresh_and_tcp_read_verified_physical_actions_pending",
   "date": "2026-10-30",
   "confirmed": {
     "https_api_base": "https://tbox.zontesmotor.com/zontespkeapp/api",
@@ -53,7 +53,7 @@
     "wire": "Base64 ASCII of CBC(inner + comma + CBC(device_tag))",
     "current_rsa_transport": false,
     "swift_real_client_live_auth_and_read": true,
-    "ios_build": "1.2.6 (29)",
+    "ios_build": "1.2.7 (30)",
     "login_transport": {
       "gateway": "https://mgw.mpaas.cn-hangzhou.aliyuncs.com/mgw.htm",
       "operation_type": "com.tayo.msbox.login",
@@ -65,12 +65,18 @@
       "full_rpc_headers_login_verified_on_mac": true,
       "gateway_success_status": "1000",
       "business_success_code": 200,
-      "ios_port_complete": false
+      "ios_port_complete": true,
+      "sdk_dependency": false,
+      "sign_algorithm": "lowercase HEX MD5 of UTF8(secret + ampersand + signContent)",
+      "timestamp": "integer Unix milliseconds in radix 64, alphabet 0-9 A-Z a-z + /",
+      "original_signature_comparisons": 4,
+      "native_sdk_synthetic_key_vector_match": true,
+      "swift_live_login_refresh_and_reads": true,
+      "shared_signing_secret_published": false
     }
   },
   "not_yet_verified": [
-    "ios_mpaas_signing_configuration_and_login_port",
-    "latest_token_refresh_operation_and_fields",
+    "on_phone_user_login_acceptance",
     "physical_find_lock_unlock_execution",
     "all_extended_command_layouts_and_vehicle_ack_semantics"
   ],

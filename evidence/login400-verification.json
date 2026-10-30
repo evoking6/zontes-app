@@ -1,0 +1,22 @@
+{
+  "home": true,
+  "implementation": "actual-iOS-app-Swift",
+  "login": true,
+  "refresh": true,
+  "sdk_dependency": false,
+  "user_profile": true,
+  "vehicle_actions_sent": false,
+  "vehicles": true,
+  "version": "1.2.7 (30)",
+  "date": "2026-10-30",
+  "regression_tests": {
+    "executed": 100,
+    "passed": 98,
+    "skipped": 2,
+    "failed": 0,
+    "login400_reproduced_before_fix": true
+  },
+  "installed_and_launched": true,
+  "phone_interactive_login_acceptance": false,
+  "real_account_material_included": false
+}
